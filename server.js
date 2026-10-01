@@ -22,11 +22,16 @@ function send(res, status, body) {
 
 http.createServer((req, res) => {
   if (req.method === "GET" && req.url === "/health") {
-    return send(res, 200, {ok:true,status:"online",message:"IRA Brain server online",model:{configured:false}});
+    return send(res, 200, {ok:true,status:"online",message:"IRA Brain server online",model:{configured:false,testMode:true}});
   }
   if (!authorized(req)) return send(res, 401, {ok:false,error:"UNAUTHORIZED"});
   if (req.method === "POST" && req.url === "/v1/chat") {
-    return send(res, 503, {ok:false,error:"MODEL_NOT_CONFIGURED",message:"Server IRA online; modello linguistico non ancora configurato."});
+    return send(res, 200, {
+      ok:true,
+      reply:"Ciao! IRA Brain è online e il collegamento Telegram → Cloudflare → Render funziona correttamente. Questa è una risposta di test: il modello AI vero non è ancora collegato.",
+      test_mode:true,
+      model_configured:false
+    });
   }
   return send(res, 404, {ok:false,error:"NOT_FOUND"});
 }).listen(port, host, () => console.log(`IRA Brain online on ${host}:${port}`));
