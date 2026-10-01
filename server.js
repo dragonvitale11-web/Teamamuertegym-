@@ -21,10 +21,10 @@ function send(res, status, body) {
 }
 
 http.createServer((req, res) => {
-  if (!authorized(req)) return send(res, 401, {ok:false,error:"UNAUTHORIZED"});
   if (req.method === "GET" && req.url === "/health") {
     return send(res, 200, {ok:true,status:"online",message:"IRA Brain server online",model:{configured:false}});
   }
+  if (!authorized(req)) return send(res, 401, {ok:false,error:"UNAUTHORIZED"});
   if (req.method === "POST" && req.url === "/v1/chat") {
     return send(res, 503, {ok:false,error:"MODEL_NOT_CONFIGURED",message:"Server IRA online; modello linguistico non ancora configurato."});
   }
